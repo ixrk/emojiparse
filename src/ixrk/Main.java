@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -21,7 +22,7 @@ public class Main {
         }
 
         try {
-            List<String> emojis = getEmojiList(url);
+            List<Emoji> emojis = getEmojiList(url);
             emojis.forEach(System.out::println);
         } catch (MalformedURLException e) {
             System.err.println("Malformed URL");
@@ -32,13 +33,22 @@ public class Main {
         }
     }
 
-    private static List<String> getEmojiList(String urlSpec) throws IOException {
+    private static List<Emoji> getEmojiList(String urlSpec) throws IOException {
         URL url = new URL(urlSpec);
         BufferedReader reader = new BufferedReader(new InputStreamReader(url.openStream()));
-        return reader.lines()
+        List<String> lines = reader.lines()
                 .filter(v -> v.contains("; fully-qualified"))
                 .filter(v -> !v.contains("skin tone"))
-                .map(v -> v.substring(1 + v.lastIndexOf("#")).trim())
+                .map(v -> v.substring(1 + v.indexOf("#")).trim())
                 .collect(Collectors.toList());
+
+        List<Emoji> emojis = new ArrayList<>(lines.size());
+        for (String line : lines) {
+            int firstSpace = line.indexOf(" ");
+            String value = line.substring(0, line.indexOf(" "));
+            String description = line.substring(1 + line.indexOf(" "));
+            emojis.add(new Emoji(value, description));
+        }
+        return emojis;
     }
 }
