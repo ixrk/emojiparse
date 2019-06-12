@@ -11,30 +11,20 @@ import java.util.stream.Collectors;
 
 public class Main {
 
-    private static final String EMOJI_URL = "https://unicode.org/Public/emoji/12.0/emoji-test.txt";
+    private static final String EMOJI_URL = "https://unicode.org/Public/emoji/latest/emoji-test.txt";
 
     public static void main(String[] args) {
-        String url;
-        if (args.length > 0) {
-            url = args[0];
-        } else {
-            url = EMOJI_URL;
-        }
-
         try {
-            List<Emoji> emojis = getEmojiList(url);
+            List<Emoji> emojis = getEmojiList();
             emojis.forEach(System.out::println);
-        } catch (MalformedURLException e) {
-            System.err.println("Malformed URL");
-            System.exit(2);
         } catch (IOException e) {
             e.printStackTrace();
             System.exit(3);
         }
     }
 
-    private static List<Emoji> getEmojiList(String urlSpec) throws IOException {
-        URL url = new URL(urlSpec);
+    private static List<Emoji> getEmojiList() throws IOException {
+        URL url = new URL(EMOJI_URL);
         BufferedReader reader = new BufferedReader(new InputStreamReader(url.openStream()));
         List<String> lines = reader.lines()
                 .filter(v -> v.contains("; fully-qualified"))
