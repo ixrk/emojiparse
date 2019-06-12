@@ -12,7 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class Main {
+public class Emojiparse {
     public static void main(String[] args) {
         try {
             List<Emoji> emojis = getEmojis(parseProvider(args));
