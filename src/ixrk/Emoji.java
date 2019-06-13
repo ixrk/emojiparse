@@ -19,6 +19,6 @@ public class Emoji {
 
     @Override
     public String toString() {
-        return String.join("\t", value, description);
+        return String.join(" ", value, description);
     }
 }
