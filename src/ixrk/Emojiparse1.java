@@ -12,10 +12,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class Emojiparse {
+public class Emojiparse1 {
     public static void main(String[] args) {
         try {
-            List<Emoji> emojis = getEmojis(parseProvider(args));
+            List<Emoji1> emojis = getEmojis(parseProvider(args));
             emojis.forEach(System.out::println);
         } catch (IOException e) {
             e.printStackTrace();
@@ -23,7 +23,7 @@ public class Emojiparse {
         }
     }
 
-    public static List<Emoji> getEmojis(Provider provider) throws IOException {
+    public static List<Emoji1> getEmojis(Provider1 provider) throws IOException {
         if (provider == null) {
             return getUnicodeTestEmojis();
         }
@@ -36,13 +36,13 @@ public class Emojiparse {
         }
     }
 
-    private static Provider parseProvider(String[] args) {
+    private static Provider1 parseProvider(String[] args) {
         if (args.length > 0) {
             switch (args[0]) {
                 case "wikipedia":
-                    return Provider.WIKIPEDIA;
+                    return Provider1.WIKIPEDIA;
                 case "unicode-test":
-                    return Provider.UNICODE_EMOJI_TEST;
+                    return Provider1.UNICODE_EMOJI_TEST;
                 default:
                     return null;
             }
@@ -51,8 +51,8 @@ public class Emojiparse {
         }
     }
 
-    private static List<Emoji> getUnicodeTestEmojis() throws IOException {
-        URL url = new URL(Provider.UNICODE_EMOJI_TEST.getUrl());
+    private static List<Emoji1> getUnicodeTestEmojis() throws IOException {
+        URL url = new URL(Provider1.UNICODE_EMOJI_TEST.getUrl());
         BufferedReader reader = new BufferedReader(new InputStreamReader(url.openStream()));
         List<String> lines = reader.lines()
                 .filter(v -> v.contains("; fully-qualified"))
@@ -60,30 +60,30 @@ public class Emojiparse {
                 .map(v -> v.substring(1 + v.indexOf("#")).trim())
                 .collect(Collectors.toList());
 
-        List<Emoji> emojis = new ArrayList<>(lines.size());
+        List<Emoji1> emojis = new ArrayList<>(lines.size());
         for (String line : lines) {
             int firstSpace = line.indexOf(" ");
             String value = line.substring(0, line.indexOf(" "));
             String description = line.substring(1 + line.indexOf(" "));
-            emojis.add(new Emoji(value, description));
+            emojis.add(new Emoji1(value, description));
         }
         return emojis;
     }
 
-    private static List<Emoji> getWikipediaEmojis() throws IOException {
-        Document doc = Jsoup.connect(Provider.WIKIPEDIA.getUrl()).get();
+    private static List<Emoji1> getWikipediaEmojis() throws IOException {
+        Document doc = Jsoup.connect(Provider1.WIKIPEDIA.getUrl()).get();
         Element tableBody = doc.getElementsByClass("wikitable nounderlines")
                 .last()
                 .getElementsByTag("tbody")
                 .first();
 
-        List<Emoji> emojis = new ArrayList<>();
+        List<Emoji1> emojis = new ArrayList<>();
         for (Element td : tableBody.getElementsByTag("td")) {
             if (td.hasAttr("title") && td.attr("title").matches("^U\\+.*: .+")) {
                 String emojiInfo = td.attr("title");
                 String emojiValue = td.getElementsByTag("a").text();
                 String emojiDescription = emojiInfo.substring(2 + emojiInfo.indexOf(":"));
-                emojis.add(new Emoji(emojiValue, emojiDescription));
+                emojis.add(new Emoji1(emojiValue, emojiDescription));
             }
         }
         return emojis;

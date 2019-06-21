@@ -1,10 +1,10 @@
 package ixrk;
 
-public class Emoji {
+public class Emoji1 {
     private String value;
     private String description;
 
-    public Emoji(String value, String description) {
+    public Emoji1(String value, String description) {
         this.value = value;
         this.description = description;
     }

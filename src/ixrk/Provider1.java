@@ -1,12 +1,12 @@
 package ixrk;
 
-public enum Provider {
+public enum Provider1 {
     UNICODE_EMOJI_TEST("https://unicode.org/Public/emoji/latest/emoji-test.txt"),
     WIKIPEDIA("https://en.wikipedia.org/wiki/Emoji");
 
     private String url;
 
-    Provider(String url) {
+    Provider1(String url) {
         this.url = url;
     }
 
